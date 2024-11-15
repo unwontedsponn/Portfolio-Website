@@ -66,7 +66,7 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
 
           {/* Smaller Screens without SlideFadeIn */}
           <div className="md:hidden space-y-4">
-            <h1 className="text-7xl opacity-40">myWritings</h1>
+            <h1 className="text-7xl opacity-40">myMusings</h1>
             <p className="text-2xl sm:text-3xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap text-decoration-color">
               <TypewriterEffect text="Featured pieces..." />
             </p>
