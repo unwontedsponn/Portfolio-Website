@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Toolbar from './components/Toolbar';
-import MusicCanvas from './components/MusicCanvas';
-import OptionsPanel from './components/OptionsPanel';
+import Worksheet from './components/Worksheet';
+import LeadSheetCanvas from './components/LeadSheetCanvas';
 
 interface ScoringAppProps {
   id: string;
@@ -21,17 +20,11 @@ const ScoringApp: React.FC<ScoringAppProps> = ({ id }) => {
   }, []);
 
   return (
-    <section
-      id={id}
-      className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen justify-center ${
-        isNarrowViewport ? 'bg-pink bg-opacity-10' : ''
-      }`}
-    >
-      <Toolbar />
+    <section id={id} className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen justify-center ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''}`}>      
+      <Worksheet />
       <div className="flex justify-center mt-4">
-        <MusicCanvas />
-      </div>
-      <OptionsPanel />
+        <LeadSheetCanvas />
+      </div>            
     </section>
   );
 };
