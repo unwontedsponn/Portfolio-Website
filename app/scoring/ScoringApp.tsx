@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Worksheet from './components/Worksheet';
+import UserInput from './components/UserInput';
 import LeadSheetCanvas from './components/LeadSheetCanvas';
 
 interface ScoringAppProps {
@@ -21,7 +21,7 @@ const ScoringApp: React.FC<ScoringAppProps> = ({ id }) => {
 
   return (
     <section id={id} className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen justify-center ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''}`}>      
-      <Worksheet />
+      <UserInput />
       <div className="flex justify-center mt-4">
         <LeadSheetCanvas />
       </div>            

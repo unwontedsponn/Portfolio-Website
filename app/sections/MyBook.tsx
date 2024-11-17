@@ -120,9 +120,11 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                       <span className="hidden xl:inline">- </span><span className="underline color-green">Apple Books↑</span>
                   </a>
                 </div>
-                <Link href='/scoring' className="bold color-dark uppercase">
-                  Score your piece
-                </Link>                
+                <div>
+                  <Link href='/scoring' className="bold color-dark uppercase hover:underline">
+                    Score your piece
+                  </Link>                
+                </div>                
               </SlideFadeIn>
             </div>        
             <BookComponent width={300} height={300} direction="right"/>      
