@@ -1,63 +1,52 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
+import { drawStaff } from "../notations/staff";
+import SlideFadeIn from "@/app/components/SlideFadeIn";
 
-const LeadSheetCanvas: React.FC = () => {
+interface LeadSheetCanvasProps {
+  userNotes: { note: string; duration: "quarter" | "half" }[];
+}
+
+const LeadSheetCanvas: React.FC<LeadSheetCanvasProps> = ({ userNotes }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return; // Exit if canvas is null
+    if (!canvas) return;
 
-    const context = canvas.getContext('2d');
-    if (context) {
-      // Clear the canvas
-      context.clearRect(0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext("2d");
+    if (!context) return;
 
-      // Draw a simple staff as an example
-      drawStaff(context);
-    }
-  }, []);
+    const lineSpacing = 15;
+    const staveWidth = 960;
+    const totalBars = 4;
 
-  const drawStave = (ctx: CanvasRenderingContext2D, startY: number, width: number, lineSpacing: number) => {
-    for (let i = 0; i < 5; i++) {
-      ctx.beginPath();
-      ctx.moveTo(20, startY + i * lineSpacing);
-      ctx.lineTo(20 + width, startY + i * lineSpacing);
-      ctx.stroke();
-    }
-  };
+    const font = new FontFace(
+      "Bravura",
+      "url(/fonts/Bravura/Bravura.woff2) format('woff2')"
+    );
 
-  const drawBarLine = (ctx: CanvasRenderingContext2D, x: number, startY: number, lineSpacing: number) => {
-    ctx.beginPath();
-    ctx.moveTo(x, startY);
-    ctx.lineTo(x, startY + 4 * lineSpacing);
-    ctx.stroke();
-  };
-
-  const drawStaff = (ctx: CanvasRenderingContext2D) => {
-    const lineSpacing = 15; 
-    const staveWidth = 960; 
-    const staves = [50, 160]; // Y positions of the staves
-    const barLinePositions = [250, 500, 750, 980]; // X positions of the bar lines
-
-    // Draw each stave
-    staves.forEach((startY) => {
-      drawStave(ctx, startY, staveWidth, lineSpacing);
-
-      // Draw bar lines for this stave
-      barLinePositions.forEach((x) => {
-          drawBarLine(ctx, x, startY, lineSpacing);
+    font
+      .load()
+      .then(() => {
+        document.fonts.add(font);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawStaff(context, lineSpacing, staveWidth, totalBars, userNotes);
+      })
+      .catch((error) => {
+        console.error("Font loading failed:", error);
       });
-    });
-  };
+  }, [userNotes]); // Re-render whenever userNotes changes
 
   return (
-    <canvas
-      ref={canvasRef}
-      id="notation"
-      width="1000"
-      height="250"
-      className="music-canvas bg-white border-3 border-thick-border-gray p-4"
-    />
+    <SlideFadeIn direction="up" className="">
+      <canvas
+        ref={canvasRef}
+        id="notation"
+        width="1000"
+        height="160"
+        className="music-canvas p-4"
+      />
+    </SlideFadeIn>
   );
 };
 
