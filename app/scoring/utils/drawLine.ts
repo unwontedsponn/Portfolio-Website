@@ -4,7 +4,7 @@ export const drawLine = (
     startY: number,
     endX: number,
     endY: number,
-    width: number = 1
+    width: number = 2
   ) => {
     ctx.beginPath();
     ctx.lineWidth = width;

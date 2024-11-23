@@ -1,55 +1,54 @@
-import { drawLine } from "../utils/drawingHelpers";
+import { drawLine } from "../utils/drawLine";
+import { drawHead } from "../utils/drawHead";
+import { drawLedgerLine } from "../utils/drawLedgerLine";
 
-export const drawQuarterNote = (
+export const drawNoteManual = (
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
   lineSpacing: number,
-  note: string
+  type: "quarter" | "half"
 ) => {
-  // Draw the notehead
   ctx.save();
-  ctx.font = `${lineSpacing * 3.5}px Bravura, Arial, sans-serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("𝅘𝅥", x, y + 2 * lineSpacing);
 
-  // Determine stem direction and placement
+  // Draw the notehead using drawHead helper
+  drawHead(ctx, x, y, lineSpacing, type);
+
+  // Define the ledger line Y position dynamically based on the note
+  if (y === 95 || y === 102.5) {
+    const ledgerLineY = 110; // Fixed Y position for both Low C and Low B
+    drawLedgerLine(ctx, x, ledgerLineY, lineSpacing);
+    console.log("ledger line drawn");
+  }
+
+  // Determine stem direction and draw it using drawLine helper
+  const middleLineY = 50;
+  const isLowNote = y >= middleLineY; // Notes on/above middle line
   const stemHeight = lineSpacing * 3;
-  if (x < 0) {
-    // Stem points down and attaches to the left
-    drawLine(ctx, x - 7, y + 2 * lineSpacing + 3, x - 7, y + 2 * lineSpacing + stemHeight, 1.5);
+
+  if (isLowNote) {
+    // Stem pointing up, attached to the right of the notehead
+    drawLine(
+      ctx,
+      x + lineSpacing * 0.6,
+      y + 2 * lineSpacing,
+      x + lineSpacing * 0.6,
+      y + 2 * lineSpacing - stemHeight,
+      2
+    );
   } else {
-    // Stem points up and attaches to the right
-    drawLine(ctx, x + 7, y + 2 * lineSpacing - 3, x + 7, y + 2 * lineSpacing - stemHeight, 1.5);
+    // Stem pointing down, attached to the left of the notehead
+    drawLine(
+      ctx,
+      x - lineSpacing * 0.6,
+      y + 2 * lineSpacing,
+      x - lineSpacing * 0.6,
+      y + 2 * lineSpacing + stemHeight,
+      2
+    );
   }
 
   ctx.restore();
-};
 
-export const drawHalfNote = (
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  lineSpacing: number,
-  note: string
-) => {
-  // Draw the notehead (empty circle for a half note)
-  ctx.save();
-  ctx.font = `${lineSpacing * 3.5}px Bravura, Arial, sans-serif`;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("𝅗𝅥", x, y + 2 * lineSpacing);
-
-  // Determine stem direction and placement
-  const stemHeight = lineSpacing * 3;
-  if (x < 0) {
-    // Stem points down and attaches to the left
-    drawLine(ctx, x - 7, y + 2 * lineSpacing + 3, x - 7, y + 2 * lineSpacing + stemHeight, 1.5);
-  } else {
-    // Stem points up and attaches to the right
-    drawLine(ctx, x + 7, y + 2 * lineSpacing - 3, x + 7, y + 2 * lineSpacing - stemHeight, 1.5);
-  }
-
-  ctx.restore();
+  console.log(y);
 };

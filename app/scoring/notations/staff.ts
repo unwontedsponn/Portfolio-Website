@@ -1,17 +1,17 @@
-import { drawLine } from "../utils/drawingHelpers";
+// Staf.ts
+import { drawLine } from "../utils/drawLine";
 import { drawTrebleClef } from "./trebleClef";
 import { drawTimeSignature } from "./timeSignature";
-import { drawQuarterNote } from "./notes";
-import { drawHalfNote } from "./notes";
+import { drawNoteManual } from "./notes";
 
-const notePositions: { [key: string]: number } = {
-  C: -0.5,  
-  D: -1,  
-  E: 2,
-  F: 1.5,  
-  G: 1,  
-  A: 0.5,  
-  B: 0,
+export const notePositions: { [key: string]: { low: number; high: number } } = {
+  C: { high: -0.5, low: 3 },
+  D: { high: -1, low: 2.5 },
+  E: { high: -1.5, low: 2 },
+  F: { high: -2, low: 1.5 },
+  G: { high: -2.5, low: 1 },
+  A: { high: -3, low: 0.5 },
+  B: { high: 0, low: 3.5 },
 };
 
 export const drawStaff = (
@@ -19,7 +19,7 @@ export const drawStaff = (
   lineSpacing: number,
   staveWidth: number,
   totalBars: number,
-  userNotes: { note: string; duration: "quarter" | "half" }[] // Updated to include note duration
+  userNotes: { note: keyof typeof notePositions; duration: "quarter" | "half"; range: "low" | "high" }[] // Updated type for userNotes
 ) => {
   const staveY = 50;
   const startX = 20;
@@ -37,6 +37,7 @@ export const drawStaff = (
   const timeSignatureX = trebleClefX + trebleClefWidth + 5;
   const timeSignatureWidth = drawTimeSignature(ctx, timeSignatureX, staveY, lineSpacing);
 
+  // Calculate bar widths
   const firstBarStart = timeSignatureX + timeSignatureWidth - 10;
   const totalWidth = staveWidth - firstBarStart;
   const barWidth = totalWidth / totalBars;
@@ -60,7 +61,7 @@ export const drawStaff = (
   const notesPerBar = 4;
   let beatIndex = 0; // Track the current beat (0-based within the bar)
 
-  userNotes.forEach(({ note, duration }) => {
+  userNotes.forEach(({ note, duration, range }) => {
     const barIndex = Math.floor(beatIndex / notesPerBar); // Bar index
     const beatInBar = beatIndex % notesPerBar; // Current beat within the bar
 
@@ -71,18 +72,16 @@ export const drawStaff = (
     const spacing = (nextBarStart - barStart) / (notesPerBar + 1);
 
     const noteX = barStart + (beatInBar + 1) * spacing;
-    const noteY = staveY + notePositions[note] * lineSpacing;
+    const yPosition = notePositions[note][range]; // Safely access notePositions with keyof typeof
+    const noteY = staveY + yPosition * lineSpacing;
 
     if (duration === "quarter") {
-      drawQuarterNote(ctx, noteX, noteY, lineSpacing, note);
+      drawNoteManual(ctx, noteX, noteY, lineSpacing, 'quarter');
       beatIndex += 1; // Move to the next beat
-    } 
-    if (duration === "half") {
+    } else if (duration === "half") {
       if (beatInBar === 3) return; // Prevent half notes on beat 4
-      drawHalfNote(ctx, noteX, noteY, lineSpacing, note);
+      drawNoteManual(ctx, noteX, noteY, lineSpacing, 'half');
       beatIndex += 2; // Move two beats forward
     }
-
-    console.log(beatInBar);
   });
 };

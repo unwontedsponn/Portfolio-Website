@@ -1,10 +1,10 @@
+// UserInput.tsx
 import React, { useState } from "react";
 import SlideFadeIn from "@/app/components/SlideFadeIn";
-import TypewriterEffect from "@/app/components/TypewriterEffect";
 
 interface UserInputProps {
   currentBeat: number;
-  onNoteSelect: (note: string, duration: "quarter" | "half") => void;
+  onNoteSelect: (note: string, duration: "quarter" | "half", range: "low" | "high") => void;
   onReset: () => void;
   isStaveFull: boolean;
 }
@@ -12,6 +12,7 @@ interface UserInputProps {
 const UserInput: React.FC<UserInputProps> = ({ currentBeat, onNoteSelect, onReset, isStaveFull }) => {
   const [selectedNote, setSelectedNote] = useState<string>("C");
   const [selectedDuration, setSelectedDuration] = useState<"quarter" | "half">("quarter");
+  const [selectedRange, setSelectedRange] = useState<"low" | "high">("low");
 
   const notes = ["C", "D", "E", "F", "G", "A", "B"];
 
@@ -23,18 +24,18 @@ const UserInput: React.FC<UserInputProps> = ({ currentBeat, onNoteSelect, onRese
     setSelectedDuration(event.target.value as "quarter" | "half");
   };
 
+  const handleRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRange(event.target.value as "low" | "high");
+  };
+
   const handleAddNote = () => {
-    onNoteSelect(selectedNote, selectedDuration);
+    onNoteSelect(selectedNote, selectedDuration, selectedRange);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-10 font-gopher-mono">
+    <div className="flex flex-col items-center justify-center font-gopher-mono">            
       
-      <SlideFadeIn direction="right" className="text-5xl leading-none font-gopher-mono-semi color-blue mb-5">
-        <h1 className="opacity-40">scoreYourPiece</h1>
-      </SlideFadeIn>
-      
-      <div className="w-full max-w-xs px-6">             
+      <div className="w-full max-w-2xl px-6">             
         {/* Note Selection */}
         <SlideFadeIn direction="left" className="mb-4">
           <label className="block text-dark-gray font-medium mb-2">Choose a Note:</label>
@@ -60,14 +61,30 @@ const UserInput: React.FC<UserInputProps> = ({ currentBeat, onNoteSelect, onRese
             className="w-full border border-gray-400 rounded px-2 py-1 text-dark-gray"
           >
             <option value="quarter">Quarter Note</option>
-            <option value="half" disabled={currentBeat === 4}>
+            <option
+              value="half"
+              disabled={(currentBeat % 4) > 2 || currentBeat >= 15}
+            >
               Half Note
             </option>
           </select>
         </SlideFadeIn>
 
+        {/* Range Selection */}
+        <SlideFadeIn direction="left" className="mb-4">
+          <label className="block text-dark-gray font-medium mb-2">Choose High or Low:</label>
+          <select
+            value={selectedRange}
+            onChange={handleRangeChange}
+            className="w-full border border-gray-400 rounded px-2 py-1 text-dark-gray"
+          >
+            <option value="low">Low</option>
+            <option value="high">High</option>
+          </select>
+        </SlideFadeIn>
+
         {/* Buttons */}
-        <SlideFadeIn direction="right" className="flex flex-col gap-4">
+        <SlideFadeIn direction="right" className="flex flex-row gap-4">
           <button
             onClick={handleAddNote}
             disabled={isStaveFull}
