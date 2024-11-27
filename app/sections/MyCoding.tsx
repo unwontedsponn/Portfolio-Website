@@ -29,8 +29,8 @@ const MyCoding: React.FC<MyCodingProps> = ({ id }) => {
         {!isNarrowViewport ? (
           <>
             <div className="flex flex-col">
-              <SlideFadeIn direction="left" className="hidden md:block text-11xl leading-none font-gopher-mono-semi color-blue">
-                <h1 className="opacity-40">myCodes</h1>
+              <SlideFadeIn direction="left" className="hidden md:block text-9xl leading-none font-gopher-mono-semi color-blue">
+                <h1 className="opacity-40">myCoding</h1>
               </SlideFadeIn>
 
               <SlideFadeIn direction="right" className="hidden md:block text-3xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 color-dark-blue text-decoration-color">
