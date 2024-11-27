@@ -74,12 +74,8 @@ html {scroll-behavior: smooth;}
 .flashing-text {animation: flashAnimation 1s linear infinite;}
 
 @keyframes fadeIn {
-  0% {
-      opacity: 0;
-  }
-  100% {
-      opacity: 1;
-  }
+  0% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 .animate-fadeIn {
@@ -91,7 +87,7 @@ html {scroll-behavior: smooth;}
 * :Hover and Text decoration
 */
 /*--------------------------------------------------------------------------------------------------------------------*/
-#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myGameNav:hover, #contactNav:hover, .footer-buttons:hover, #aboutMeNavMobile:hover, #myBookNavMobile:hover, #contactMeNavMobile:hover, #myMusingsNav:hover, #back-to-blogs:hover, #FiX:hover, #FiMenu:hover, #myMusingsNavMobile:hover {
+#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myGameNav:hover, #contactNav:hover, .footer-buttons:hover, #aboutMeNavMobile:hover, #myBookNavMobile:hover, #contactMeNavMobile:hover, #myMusingsNav:hover, #back-to-blogs:hover, #FiX:hover, #FiMenu:hover, #myMusingsNavMobile:hover, #myCodeNav:hover {
   color: #e39ba6;
   text-decoration: underline;
   text-decoration-color: #c15564;

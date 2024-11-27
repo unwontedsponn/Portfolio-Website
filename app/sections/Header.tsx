@@ -3,24 +3,21 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Contact from '../modals/Contact';
 import Cart from '../modals/Cart';
-import { FiMenu, FiX } from 'react-icons/fi'; // Import icons for the hamburger menu
 import ShoppingCartIcon from '../components/ShoppingCartIcon';
 
 const Header: React.FC = () => {  
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showCartModal, setShowCartModal] = useState<boolean>(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [isSmallViewport, setIsSmallViewport] = useState<boolean>(false);
+  const [showCartModal, setShowCartModal] = useState<boolean>(false);  
+  const [viewportWidth, setViewportWidth] = useState<number>(0);
 
   const toggleModal = () => setShowModal(!showModal);
-  const toggleCartModal = () => setShowCartModal(!showCartModal);
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleCartModal = () => setShowCartModal(!showCartModal);  
 
   useEffect(() => {
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame', 'myMusings'];
+    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame', 'myCode', 'myMusings'];
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -50,146 +47,145 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // Track viewport width for mobile menu visibility
   useEffect(() => {
-    const checkViewportWidth = () => {
-      setIsSmallViewport(window.innerWidth < 1024); // `md` breakpoint is 768px
+    const updateViewportWidth = () => {
+      setViewportWidth(window.innerWidth);
     };
 
-    // Check initial width
-    checkViewportWidth();
+    updateViewportWidth(); // Initial check
+    window.addEventListener("resize", updateViewportWidth);
 
-    // Add resize event listener
-    window.addEventListener('resize', checkViewportWidth);
+    return () => window.removeEventListener("resize", updateViewportWidth);
+  }, []);
 
-    // Clean up event listener on component unmount
-    return () => window.removeEventListener('resize', checkViewportWidth);
-  }, []);  
+  // Determine Header style based on viewport width
+  const isBelow768 = viewportWidth < 768;
+  const isBetween768And1024 = viewportWidth >= 768 && viewportWidth < 1024;
+  const isBetween1024And1330 = viewportWidth >= 1024 && viewportWidth < 1330;
+  const isAbove1330 = viewportWidth >= 1330;
 
-  return (
-    <>
-      <section id="header" className={`fixed inset-x-0 top-0 z-10 pt-4 text-lg`}>
-        <div className={`flex items-center ${isSmallViewport ? 'justify-center space-x-4' : 'justify-between border-b-2 border-custom-border-color'} mx-auto px-4 pb-4 md:py-2 lg:max-w-screen-lg xl:max-w-screen-xl`}>
-          
-          {/* Logo */}
-          <div 
-            className={`flex items-center ${isSmallViewport ? 'hidden' : 'border-r-2 border-custom-border-color pr-4'}`}            
+  const headerClass = isBelow768
+    ? "relative"
+    : "fixed inset-x-0 top-0 z-10"; // Fixed for widths >=768px
+
+  const navClass = isAbove1330
+    ? "justify-between max-w-[1280px]" // Logo and nav links have a gap
+    : isBetween1024And1330
+    ? "justify-around lg:max-w-[935px]" // No gap between logo and nav links
+    : "justify-center max-w-[270px]"; // Default for smaller screens
+
+    return (
+      <>
+        <section id="header" className={`${headerClass} py-4 text-lg`}>
+          <div
+            className={`flex items-center mx-auto px-4 py-2 border-b-2 border-custom-border-color ${navClass}`}
           >
-            <Link
-              href="/?scrollTo=homepage"
-              className="font-gopher-mono-semi"                            
-              id="homepageNav"
+            {/* Logo */}
+            <div
+              className={`flex items-center ${
+                isAbove1330 ? "pr-4 border-r-2 border-custom-border-color" : ""
+              } ${isBelow768 || isBetween768And1024 ? 'pr-4' : ''}`}
             >
-              benSpooner
-            </Link>            
-          </div>
-
-          {/* Hamburger and cart icon for small screens */}
-          {isSmallViewport ? (
-            <div className="flex flex-col items-center space-y-2 w-screen">
-              {/* Logo and Cart */}
-              <div className="flex items-center space-x-2 border-b border-custom-border-color pb-4">
-                <Link
-                  href="/?scrollTo=homepage"
-                  className="font-gopher-mono-semi text-lg text-center"                                
-                  id="homepageMobileNav"
-                >
-                  benSpooner
-                </Link>  
+              <Link
+                href="/?scrollTo=homepage"
+                className="font-gopher-mono-semi text-lg"
+                id="homepageNav"
+              >
+                benSpooner
+              </Link>
+            </div>
+  
+            {/* Cart and Contact for small screens */}
+            {(isBelow768 || isBetween768And1024) && (
+              <div className="flex items-center space-x-4">
                 {/* Cart Icon */}
                 <div
                   id="cart"
                   className="cursor-pointer"
                   onClick={toggleCartModal}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCartModal(); }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") toggleCartModal();
+                  }}
                   tabIndex={0}
                   role="button"
                 >
                   <ShoppingCartIcon />
-                </div>    
+                </div>
+  
+                {/* Contact */}
+                <button id="contactNav" onClick={toggleModal}>
+                  contactMe
+                </button>
               </div>
-              
-              {/* Hamburger Menu Icon */}
-              <button onClick={toggleMobileMenu} className="p-2 min-[768px]:hidden">
-                {isMobileMenuOpen ? <FiX id="FiX" size={24} /> : <FiMenu id="FiMenu" size={24} />}
-              </button>                            
-            </div>          
-          ) : (
-            // Desktop navigation
-            <nav className="hidden md:flex space-x-4 font-gopher-mono">            
-              <Link href="/?scrollTo=aboutMe" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="aboutMeNav">
-                aboutMe
-              </Link>
-              <Link href="/?scrollTo=myBook" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myBookNav">
-                myBook
-              </Link>
-              <Link href="/?scrollTo=myGame" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myGameNav">
-                myGame
-              </Link>            
-              <Link href="/?scrollTo=myMusings" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myMusingsNav">
-                myMusings
-              </Link> 
-              <div
-                id="cart"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={toggleCartModal}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCartModal(); }}
-                tabIndex={0}
-                role="button"
-              >
-                <ShoppingCartIcon />
-              </div>
-              <button
-                id="contactNav"
-                className="border-l-2 border-custom-border-color pl-6"
-                onClick={toggleModal}
-              >
-                contactMe
-              </button>
-            </nav>
-          )}
-        </div>
-
-        {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div className="flex flex-col items-center space-y-2 bg-white-ish py-2">
-            <Link 
-              href="/?scrollTo=aboutMe" 
-              id="aboutMeNavMobile"
-              onClick={toggleMobileMenu}
-            >
-              aboutMe
-            </Link>            
-            <Link 
-              href="/?scrollTo=myBook" 
-              id="myBookNavMobile"
-              onClick={toggleMobileMenu}
-            >
-              myBook
-            </Link>  
-            <Link 
-              href="/?scrollTo=myMusings" 
-              id="myMusingsNavMobile"
-              onClick={toggleMobileMenu} 
-            >
-              myMusings
-            </Link>                                    
-            <button 
-              onClick={() => {
-                toggleModal(); 
-                toggleMobileMenu();
-              }} 
-              className="cursor-pointer"
-              id="contactMeNavMobile"
-            >
-              contactMe
-            </button>
+            )}
+  
+            {/* Full navigation for larger screens */}
+            {viewportWidth >= 1024 && (
+              <nav className="flex space-x-4 font-gopher-mono">
+                <Link
+                  href="/?scrollTo=aboutMe"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  id="aboutMeNav"
+                >
+                  aboutMe
+                </Link>
+                <Link
+                  href="/?scrollTo=myBook"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  id="myBookNav"
+                >
+                  myBook
+                </Link>
+                <Link
+                  href="/?scrollTo=myGame"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  id="myGameNav"
+                >
+                  myGame
+                </Link>
+                <Link
+                  href="/?scrollTo=myCode"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  id="myCodeNav"
+                >
+                  myCoding
+                </Link>
+                <Link
+                  href="/?scrollTo=myMusings"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  id="myMusingsNav"
+                >
+                  myMusings
+                </Link>
+                <div
+                  id="cart"
+                  className="border-l-2 border-custom-border-color pl-4 cursor-pointer"
+                  onClick={toggleCartModal}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") toggleCartModal();
+                  }}
+                  tabIndex={0}
+                  role="button"
+                >
+                  <ShoppingCartIcon />
+                </div>
+                <button
+                  id="contactNav"
+                  className="border-l-2 border-custom-border-color pl-6"
+                  onClick={toggleModal}
+                >
+                  contactMe
+                </button>
+              </nav>
+            )}
           </div>
-        )}
-      </section>
-      <Contact showModal={showModal} setShowModal={setShowModal} />
-      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} />
-    </>
-  );
-};
-export default Header;
+        </section>
+  
+        {/* Modals */}
+        <Contact showModal={showModal} setShowModal={setShowModal} />
+        <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} />
+      </>
+    );
+  };
+  
+  export default Header;

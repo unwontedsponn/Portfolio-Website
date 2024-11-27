@@ -6,6 +6,7 @@ import Homepage from './sections/Homepage';
 import AboutMe from './sections/AboutMe';
 import MyBook from './sections/MyBook';
 import MyGame from './sections/MyGame';
+import MyCode from './sections/MyCoding';
 import MyMusings from './sections/MyMusings';
 import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
@@ -61,6 +62,7 @@ const Home: React.FC = () => {
           <AboutMe id="aboutMe" />
           <MyBook id="myBook" />
           <MyGame id="myGame" onPlayChange={handleGamePlayChange} />
+          <MyCode id='myCode'/>
           <MyMusings id="myMusings" />
           {showFooter && <Footer />}
         </div>

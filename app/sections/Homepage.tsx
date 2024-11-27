@@ -37,7 +37,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
   }, []);
 
   return (
-    <section id={id} className="pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
+    <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
       <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
       
         {/* Styling for devices wider than md (768px) */}
