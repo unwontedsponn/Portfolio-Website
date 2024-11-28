@@ -11,7 +11,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
   const [isSmallViewport, setIsSmallViewport] = useState(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check  
   
-  const words = ["things", "websites", "music", "books", "films", "games", "sketches"];
+  const words = ["things", "websites", "music", "books", "games"];
 
   // Check for height (used for detecting bookmark bar presence)
   useEffect(() => {
@@ -61,7 +61,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
               </SlideFadeIn>
 
               <SlideFadeIn direction="up" className="hidden md:block pl-28 text-dark-500 font-gopher-mono tracking-smallphomepage text-xs max-w-2xl">
-                {`I thrive on bringing ideas to life. From creating myBook to myGame, to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
+                {`I thrive on bringing ideas to life. From creating myBook to myGame, to myCoding projects and my musical pieces, I'm fueled by a passion for creative endeavors, and `}
                 <span className="italic color-green">getting things done.</span>
               </SlideFadeIn>
             </div>
