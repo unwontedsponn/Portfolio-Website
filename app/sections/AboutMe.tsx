@@ -35,16 +35,16 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
         {!isNarrowViewport ? (
           <>
             <div className="flex flex-col">       
-              <SlideFadeIn direction="left" className="hidden md:block text-11xl leading-none font-gopher-mono-semi color-blue">
+              <SlideFadeIn direction="left" className="hidden md:block pl-6 lg:pl-0 text-10xl lg:text-11xl leading-none font-gopher-mono-semi color-blue">
                 <h1 className="opacity-40">aboutMe</h1>
               </SlideFadeIn>
 
-              <SlideFadeIn direction="right" className="hidden md:block text-4xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 md:pl-32 color-dark-blue text-decoration-color">
+              <SlideFadeIn direction="right" className="hidden md:block text-3xl lg:text-4xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 md:pl-32 color-dark-blue text-decoration-color">
                 <p className=""><TypewriterEffect text="A little bit about me..." /></p>
               </SlideFadeIn>
                   
               <SlideFadeIn direction="up">
-                <div className="pt-6 px-24 md:px-0 md:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
+                <div className="pt-6 px-24 md:px-10 lg:px-0 lg:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
                   <p>
                     ...Hello, I&apos;m Ben, a 35-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I&apos;ve taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
                   </p>
@@ -73,7 +73,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
               </SlideFadeIn>              
             </div>
             {/* Right Column */}
-            <SlideFadeIn className="md:hidden xl:block" direction="right"> 
+            <SlideFadeIn className="max-[1330px]:hidden" direction="right"> 
               <Image 
                 src="/images/piano.png"            
                 alt="Piano"

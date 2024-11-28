@@ -53,7 +53,7 @@ const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction 
   };
 
   return (
-    <div ref={ref} className="md:hidden xl:flex items-center justify-center space-x-4">
+    <div ref={ref} className="max-[1330px]:hidden flex items-center justify-center space-x-4">
       <div className="flex items-center">
         {/* Left Arrow */}
         <Arrow direction="left" onClick={prevPage} width={40} height={40} />

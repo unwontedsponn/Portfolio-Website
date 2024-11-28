@@ -48,7 +48,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
                 <p>I like to get things done</p>
               </SlideFadeIn>
 
-              <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none text-20vw md:text-9xl xl:text-10xl">
+              <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none text-20vw md:pl-4 md:pl-0 md:text-9xl xl:text-10xl">
                 <p className="opacity-40">Hello,</p>
               </SlideFadeIn>
 
@@ -56,7 +56,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
                 <p>and I like making... </p><RotatingWords words={words} />
               </SlideFadeIn>
 
-              <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none hidden md:block text-11xl pb-0">
+              <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none hidden md:block text-10xl lg:text-11xl pb-0">
                 <p className="opacity-40">I&apos;m Ben</p>
               </SlideFadeIn>
 
@@ -65,7 +65,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
                 <span className="italic color-green">getting things done.</span>
               </SlideFadeIn>
             </div>
-              <SlideFadeIn className={`${isNarrowViewport ? "max-w-sm": "" } md:hidden xl:block max-w-sm border-3 border-thick-border-gray`} direction="right"> 
+            <SlideFadeIn className={`${isNarrowViewport ? "max-w-sm": "" } max-[1330px]:hidden max-w-sm border-3 border-thick-border-gray`} direction="right"> 
               <Image
                 src='/images/homepage-pic.jpeg'
                 alt="homepage picture"
